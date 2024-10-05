@@ -1,0 +1,140 @@
+{
+  "text": " Hola, este es un video para transcribir usando la inteligencia artificial. Hasta pronto.",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.16,
+      "end": 8.48,
+      "text": " Hola, este es un video para transcribir usando la inteligencia artificial.",
+      "tokens": [
+        50364,
+        22637,
+        11,
+        4065,
+        785,
+        517,
+        960,
+        1690,
+        1145,
+        1142,
+        10119,
+        29798,
+        635,
+        24777,
+        3213,
+        2755,
+        11677,
+        13,
+        50798
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.43498935699462893,
+      "compression_ratio": 1.1282051282051282,
+      "no_speech_prob": 0.012353467755019665,
+      "confidence": 0.878,
+      "words": [
+        {
+          "text": "Hola,",
+          "start": 0.16,
+          "end": 0.62,
+          "confidence": 0.675
+        },
+        {
+          "text": "este",
+          "start": 1.18,
+          "end": 1.4,
+          "confidence": 0.793
+        },
+        {
+          "text": "es",
+          "start": 1.4,
+          "end": 1.6,
+          "confidence": 0.994
+        },
+        {
+          "text": "un",
+          "start": 1.6,
+          "end": 1.74,
+          "confidence": 0.998
+        },
+        {
+          "text": "video",
+          "start": 1.74,
+          "end": 2.22,
+          "confidence": 0.568          
+        },
+        {
+          "text": "para",
+          "start": 3.20,
+          "end": 3.44,
+          "confidence": 0.913
+        },
+        {
+          "text": "transcribir",
+          "start": 3.44,
+          "end": 4.48,
+          "confidence": 0.929
+        },
+        {
+          "text": "usando",
+          "start": 4.48,
+          "end": 6.1,
+          "confidence": 0.877
+        },
+        {
+          "text": "la",
+          "start": 6.1,
+          "end": 7.02,
+          "confidence": 0.98
+        },
+        {
+          "text": "inteligencia",
+          "start": 7.02,
+          "end": 7.8,
+          "confidence": 0.931
+        },
+        {
+          "text": "artificial.",
+          "start": 7.8,
+          "end": 8.48,
+          "confidence": 0.925
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "seek": 0,
+      "start": 10.04,
+      "end": 10.76,
+      "text": " Hasta pronto.",
+      "tokens": [
+        50858,
+        45027,
+        26194,
+        13,
+        50908
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.43498935699462893,
+      "compression_ratio": 1.1282051282051282,
+      "no_speech_prob": 0.012353467755019665,
+      "confidence": 0.912,
+      "words": [
+        {
+          "text": "Hasta",
+          "start": 10.04,
+          "end": 10.38,
+          "confidence": 0.834
+        },
+        {
+          "text": "pronto.",
+          "start": 10.38,
+          "end": 10.76,
+          "confidence": 0.998
+        }
+      ]
+    }
+  ],
+  "language": "es"
+}
