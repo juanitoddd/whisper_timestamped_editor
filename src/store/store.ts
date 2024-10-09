@@ -7,6 +7,7 @@ import {
 import type { PreloadedState } from "@reduxjs/toolkit";
 
 // Reducers
+import wordsReducer from "../features/words/wordsSlice";
 import uiReducer from "../features/ui/uiSlice";
 import nodesReducer from "../features/nodes/nodesSlice";
 import flowReducer from "../features/flow/flowSlice";
@@ -18,11 +19,12 @@ import { flowsApi } from "../services/flows";
 const rootReducer = combineReducers({
   // [postsApi.reducerPath]: postsApi.reducer,
   // [pokemonApi.reducerPath]: pokemonApi.reducer,
-  [nodesApi.reducerPath]: nodesApi.reducer,
-  [flowsApi.reducerPath]: flowsApi.reducer,
-  nodes: nodesReducer,
-  flow: flowReducer,
+  // [nodesApi.reducerPath]: nodesApi.reducer,
+  // [flowsApi.reducerPath]: flowsApi.reducer,
+  // nodes: nodesReducer,
+  // flow: flowReducer,
   ui: uiReducer,
+  words: wordsReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

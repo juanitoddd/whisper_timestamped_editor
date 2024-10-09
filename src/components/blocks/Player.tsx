@@ -14,6 +14,10 @@ export function Player() {
   const onPause = (e: any) =>{    
     const pauseEvt = new CustomEvent("pause", { detail: { time: e.target?.currentTime }});
     document.dispatchEvent(pauseEvt);
+  }  
+  const onSeeked = (e: any) =>{    
+    const seekedEvt = new CustomEvent("seeked", { detail: { time: e.target?.currentTime }});
+    document.dispatchEvent(seekedEvt);
   }
 
   return (        
@@ -24,7 +28,8 @@ export function Player() {
       listenInterval= {5}
       progressUpdateInterval={10}      
       onPause={onPause}
-      onPlay={onPlay}
+      onPlay={onPlay}      
+      onSeeked={onSeeked}
       customControlsSection={
         [              
           <div className="flex flex-growth"></div>,

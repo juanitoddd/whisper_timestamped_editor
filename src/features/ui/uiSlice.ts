@@ -5,14 +5,14 @@ export interface UiState {
 }
 
 const initialState: UiState = {
-  rightPanel: "timestamps",
+  rightPanel: "editor",
 };
 
 export const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    setRightPanel: (state, action: PayloadAction<string>) => {
+    setRightPanel: (state: UiState, action: PayloadAction<string>) => {
       state.rightPanel = action.payload;
     },
   },

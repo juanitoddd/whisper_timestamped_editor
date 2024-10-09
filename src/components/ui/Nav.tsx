@@ -7,7 +7,7 @@ import styles from "./Nav.module.css";
 export function Nav() {  
   const rightPanel = useSelector((state: RootState) => state.ui.rightPanel);  
   const dispatch = useDispatch<AppDispatch>();
-  const panelsRight = ['timestamps','editor']
+  const panelsRight = ['editor','output']
   return (
     <nav className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-wrap justify-between items-center">

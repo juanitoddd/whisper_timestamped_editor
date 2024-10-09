@@ -2,13 +2,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import timestamps from '../../../public/timestamps_es.json';
 import { Timestamps } from '../blocks/Timestamps';
+import { Editor } from '../blocks/Editor';
+import { Output } from '../blocks/Output';
 
 export function PanelRight() {
 
   const selected = useSelector((state: RootState) => state.ui.rightPanel);
   const panels = [
-    { id: 'timestamps', component: <Timestamps key={1}/> },
-    { id: 'editor', component: <div key={2}>Panel2</div>}
+    { id: 'editor', component: <Editor/> },
+    { id: 'output', component: <Output/>}
   ]
   return (
     <aside
@@ -16,7 +18,7 @@ export function PanelRight() {
       aria-label="Sidenav"
       id="output"
     >
-      <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+      <div className="overflow-y-auto py-1 px-3 h-full bg-white dark:bg-gray-800">
         {panels.map((panel) => panel.id === selected ? panel.component : null)}
       </div>     
     </aside>

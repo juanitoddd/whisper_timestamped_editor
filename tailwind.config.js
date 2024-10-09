@@ -12,7 +12,7 @@ export default {
         'flow': '40px auto'
       },
       gridTemplateColumns: {        
-        'panels': '180px auto 33.333333%' 
+        'panels': '280px auto 33.333333%' 
       }
     },
     fontFamily: {
