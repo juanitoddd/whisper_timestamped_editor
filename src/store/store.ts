@@ -9,6 +9,7 @@ import type { PreloadedState } from "@reduxjs/toolkit";
 // Reducers
 import wordsReducer from "../features/words/wordsSlice";
 import uiReducer from "../features/ui/uiSlice";
+import audioReducer from "../features/audio/audioSlice";
 import nodesReducer from "../features/nodes/nodesSlice";
 import flowReducer from "../features/flow/flowSlice";
 // import { pokemonApi } from "../services/pokemon";
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   // flow: flowReducer,
   ui: uiReducer,
   words: wordsReducer,
+  audio: audioReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

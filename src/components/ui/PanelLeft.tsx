@@ -11,7 +11,7 @@ export function PanelLeft() {
   const dispatch = useDispatch<AppDispatch>();   
   return (
     <aside
-        className="p-1 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        className="bg-white border-r border-gray-200"
         aria-label="Sidenav"
         id="drawer-navigation"
       >

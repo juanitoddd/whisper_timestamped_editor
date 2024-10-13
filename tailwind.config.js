@@ -8,11 +8,11 @@ export default {
   theme: {
     extend: {
       gridTemplateRows: {
-        'site': '53px calc(100vh - 153px) 100px',
+        'site': '53px calc(100vh - 216px) 163px',
         'flow': '40px auto'
       },
       gridTemplateColumns: {        
-        'panels': '280px auto 33.333333%' 
+        'panels': '300px auto 33.333333%' 
       }
     },
     fontFamily: {

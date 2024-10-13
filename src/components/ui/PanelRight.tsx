@@ -9,12 +9,12 @@ export function PanelRight() {
 
   const selected = useSelector((state: RootState) => state.ui.rightPanel);
   const panels = [
-    { id: 'editor', component: <Editor/> },
-    { id: 'output', component: <Output/>}
+    { id: 'editor', component: <Editor key="editor"/> },
+    { id: 'output', component: <Output key="output"/>}
   ]
   return (
     <aside
-      className="pt-1 transition-transform -translate-x-full bg-white border-l border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"      
+      className="bg-white border-l border-gray-200"      
       aria-label="Sidenav"
       id="output"
     >

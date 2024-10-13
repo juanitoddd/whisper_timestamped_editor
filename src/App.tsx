@@ -16,21 +16,25 @@ import { Display } from './components/blocks/Display';
 
 // Data
 import timestamps from '../public/timestamps_es.json';
-import { setWords, WordGroup } from './features/words/wordsSlice';
+import { setWords, Word, WordGroup } from './features/words/wordsSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function App() {  
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    let words: WordGroup[] = [];
+    let words: Word[] = [];
     const segs = timestamps.segments
-    for(const seg of segs) { words = words.concat(seg.words)}     
+    for(const seg of segs) { 
+      const _words: Word[] = seg.words.map((word: any) => ({...word, id: uuidv4()}))
+      words = words.concat(_words)
+    }         
     dispatch(setWords(words))
   }, []);
 
   return (
     <div className="antialiased bg-gray-50 dark:bg-gray-900">
-      <div className="grid grid-rows-site">
+      <div className="grid grid-rows-site h-screen">
         <Nav />
         <div className="grid grid-cols-panels border-b">
           <PanelLeft />
