@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       gridTemplateRows: {
-        'site': '53px calc(100vh - 216px) 163px',
+        'site': '55px calc(100vh - 235px) 180px',
         'flow': '40px auto'
       },
       gridTemplateColumns: {        

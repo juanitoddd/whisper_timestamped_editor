@@ -4,7 +4,7 @@ import { Input, InputNumber, InputNumberProps, Select } from "antd";
 import type { SelectProps } from 'antd';
 import { Word, editWord } from '../../features/words/wordsSlice';
 
-export function WordEditor({word}: {word: Word}) {    
+export function WordEditor({word, color}: {word: Word, color: any}) {    
   const dispatch = useDispatch<AppDispatch>();
 
   const onChange: InputNumberProps['onChange'] = (value) => {
@@ -38,19 +38,18 @@ export function WordEditor({word}: {word: Word}) {
   };
 
   return (
-    <div className='p-2 border rounded m-1'>
+    <div className='p-2 border rounded my-3' style={{background: color.background, border:`1px solid ${color.border}`}}>
       <div className="flex justify-between items-center mb-2">      
         <div><Input type='' value={word.text} onChange={handleTextChange} /></div>
         <div className="flex">
           <div><InputNumber step={0.01} defaultValue={word.start} onChange={startChange} /></div>
           <div><InputNumber step={0.01} defaultValue={word.end} onChange={endChange} /></div>
         </div>
-      </div>           
+      </div>
       <div>
       <Select
         mode="tags"
-        style={{ width: '100%' }}
-        placeholder="Tags Mode"
+        style={{ width: '100%' }}        
         onChange={handleChange}
         options={options}
       />

@@ -15,7 +15,7 @@ export function PanelLeft() {
         aria-label="Sidenav"
         id="drawer-navigation"
       >
-        <div className="overflow-y-auto py-1 px-3 h-full bg-white dark:bg-gray-800">
+        <div className="overflow-y-auto h-full bg-white">
           <Timestamps />          
         </div>
       </aside>

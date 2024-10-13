@@ -39,9 +39,13 @@ export function Timestamps() {
   const onSeeked = (e: CustomEvent) => {
     // console.log("onSeeked", secToMs(e.detail.time))
     setStart(secToMs(e.detail.time))
-    setStart(e.detail.time)
+    // setStart(e.detail.time)
     setState('idle')
   } 
+
+  const onSeeking = (e: CustomEvent) => {
+    console.log("onSeeking", e.detail.time)
+  }
 
   // Time change
   useEffect(() => {    
@@ -75,10 +79,12 @@ export function Timestamps() {
     document.addEventListener("playing", onPlaying as EventListener);
     document.addEventListener("pause", onPause as EventListener);    
     document.addEventListener("seeked", onSeeked as EventListener);
+    document.addEventListener("seeking", onSeeking as EventListener);
     return () => {
       document.removeEventListener("playing", onPlaying as EventListener);
       document.removeEventListener("pause", onPause as EventListener);      
       document.removeEventListener("seeked", onSeeked as EventListener);
+      document.removeEventListener("seeking", onSeeking as EventListener);
     };
   }, [words]);    
 
@@ -103,7 +109,7 @@ export function Timestamps() {
         <div className='min-w-[20px]'>
           
         </div>
-        <div className="w-[270px] pt-1">
+        <div className="w-[260px] pt-1">
           {words.map((word: Word, i: number) => (
             <div
               className={classNames({              

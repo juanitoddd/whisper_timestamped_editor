@@ -9,7 +9,7 @@ export function Nav() {
   const dispatch = useDispatch<AppDispatch>();
   const panelsRight = ['editor','output']
   return (
-    <nav className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700">
+    <nav className="bg-white border-b border-gray-200 px-4 py-2.5 h-[55px]">
         <div className="flex flex-wrap justify-between items-center">
           <div className="flex justify-start items-center">
             {/*
@@ -40,7 +40,7 @@ export function Nav() {
             </button>
           </div>
       </div>
-      <div className="absolute top-0 right-0 flex items-center" style={{ height: 53 }}>        
+      <div className="absolute top-0 right-0 flex items-center h-[55px]">        
         {panelsRight.map((_panel: string) =>
           <button
             key={_panel}

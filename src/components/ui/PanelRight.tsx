@@ -14,11 +14,11 @@ export function PanelRight() {
   ]
   return (
     <aside
-      className="bg-white border-l border-gray-200"      
+      className="bg-[#f5f5f5] border-l border-gray-200"      
       aria-label="Sidenav"
       id="output"
     >
-      <div className="overflow-y-auto py-1 px-3 h-full bg-white dark:bg-gray-800">
+      <div className="overflow-y-auto py-1 px-3 h-full">
         {panels.map((panel) => panel.id === selected ? panel.component : null)}
       </div>     
     </aside>

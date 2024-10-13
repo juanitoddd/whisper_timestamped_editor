@@ -1,5 +1,5 @@
 .panelSelected {
-    background-color: white;
+    background-color: #f5f5f5;
     position: relative;
 }
 
@@ -10,7 +10,7 @@
     width: 100%;
     border-style: solid;
     border-width: 1px;
-    border-color: #fff;
+    border-color: #f5f5f5;
     position: absolute;            
     bottom: 0px;
     left: 0px;
