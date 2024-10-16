@@ -42,7 +42,7 @@ export const wordsSlice = createSlice({
       const idx2 = state.selected.findIndex((word:Word) => word.id === action.payload.id)
       state.selected[idx2] = action.payload;
     },
-    displayWord: (state: WordState, action: PayloadAction<Word>) => {      
+    displayWord: (state: WordState, action: PayloadAction<Word | undefined>) => {      
       state.display = action.payload;
     },
     selectWord: (state: WordState, action: PayloadAction<Word[]>) => {        

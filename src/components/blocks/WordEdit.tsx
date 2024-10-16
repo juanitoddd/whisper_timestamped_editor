@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { Input, InputNumber, InputNumberProps, Select } from "antd";
+import { Button, Input, InputNumber, InputNumberProps, Select } from "antd";
+import { CompressOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd';
 import { Word, editWord } from '../../features/words/wordsSlice';
+import { setCurrentTime } from '../../features/audio/audioSlice';
 
 export function WordEditor({word, color}: {word: Word, color: any}) {    
   const dispatch = useDispatch<AppDispatch>();
@@ -25,17 +27,26 @@ export function WordEditor({word, color}: {word: Word, color: any}) {
   };
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {    
     const _word = {...word, text: e.target.value}
-    dispatch(editWord(_word))
-    // word.text = e.target.value
+    dispatch(editWord(_word))    
   };
 
   const startChange = (e: number | null) => {
-    console.log(`w`, e);
+    console.log(`startChange`, e);
+    const _word = {...word, start: e ?? word.start}
+    dispatch(editWord(_word))
   };
 
   const endChange = (e: number | null) => {
-    console.log(`w`, e);
+    console.log(`endChange`, e);
+    const _word = {...word, end: e ?? word.end}
+    dispatch(editWord(_word))
   };
+
+  const placeCursor = () => {
+    const middle = (word.end + word.start)/2
+    // console.log(`placeCursor`, middle);
+    dispatch(setCurrentTime(middle))
+  }
 
   return (
     <div className='p-2 border rounded my-3' style={{background: color.background, border:`1px solid ${color.border}`}}>
@@ -43,6 +54,7 @@ export function WordEditor({word, color}: {word: Word, color: any}) {
         <div><Input type='' value={word.text} onChange={handleTextChange} /></div>
         <div className="flex">
           <div><InputNumber step={0.01} defaultValue={word.start} onChange={startChange} /></div>
+          <div><Button onClick={placeCursor} className="bg-sky-300 border-0" icon={<CompressOutlined />}></Button></div>
           <div><InputNumber step={0.01} defaultValue={word.end} onChange={endChange} /></div>
         </div>
       </div>

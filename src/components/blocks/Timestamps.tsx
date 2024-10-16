@@ -18,17 +18,24 @@ export function Timestamps() {
   const dispatch = useDispatch<AppDispatch>();
   const selectedWords = useSelector((state: RootState) => state.words.selected)  
   const words = useSelector((state: RootState) => state.words.words)
+
+  const cursor: number = useSelector((state: RootState) => state.audio.currentTime)
   
   const [current, setCurrent] = useState<Word | undefined>();
   const [start, setStart] = useState<number>(0);
   const [time, setTime] = useState<number>(0);
   const [state, setState] = useState<string>('idle');
-
+  
+  useEffect(() => { 
+    console.log("cursor", cursor)
+    setTime(cursor * 100)
+  }, [cursor])
+  
   const onPlaying = (e: CustomEvent) => {
     // console.log("onPlaying", secToMs(e.detail.time))   
     setStart(secToMs(e.detail.time))
     setState('playing')        
-  }  
+  }
 
   const onPause = (e: CustomEvent) => {    
     // console.log("onPause", secToMs(e.detail.time))
@@ -57,7 +64,7 @@ export function Timestamps() {
   }, [time]);
 
   // Show Display
-  useEffect(() => {    
+  useEffect(() => {
     dispatch(displayWord(current))
   }, [current]);
 
