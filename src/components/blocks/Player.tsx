@@ -17,8 +17,8 @@ const WAVE_HEIGHT = 95;
 export function Player() {
 
   const dispatch = useDispatch<AppDispatch>();
-  const words = useSelector((state: RootState) => state.words.words)
-  const selectedWords: Word[] = useSelector((state: RootState) => state.words.selected)
+  const words = useSelector((state: RootState) => state.words.words)  
+  const wordsIdx: string[] = useSelector((state: RootState) => state.words.selectedIdx)
   const cursor: number = useSelector((state: RootState) => state.audio.currentTime)
 
   const [head, setHead] = useState<number>(0); // Player head in pixels
@@ -31,6 +31,7 @@ export function Player() {
   const audioPlayerRef = useRef<AudioPlayer>(null);
   const wordRef = useRef<HTMLDivElement>(null)
 
+  // Initial
   useEffect(() => {
     const audioContext = new AudioContext();    
     setWidth(window.innerWidth)    
@@ -52,18 +53,19 @@ export function Player() {
     }
   }, [])
 
+  // Selection Idx
   useEffect(() => {    
-    const min = selectedWords.reduce((min: number, p:Word) => p.start < min ? p.start : min, 9999);
-    const max = selectedWords.reduce((max: number, p:Word) => p.end > max ? p.end : max, 0);    
+    const _words = words.filter((word: Word) => wordsIdx.includes(word.id))        
     const marks:[number, number][] = [];
-    for (const word of selectedWords) {
+    for (const word of _words) {
       const x1 = (width * word.start) / duration;
       const x2 = (width * word.end) / duration;      
       marks.push([x1,x2]);
-    }
+    }    
     setMarks(marks);    
-  }, [selectedWords])
+  }, [wordsIdx])
 
+  // Cursor
   useEffect(() => {
     if(duration > 0) {
       // const head = (width * cursor) / duration;      
@@ -73,6 +75,18 @@ export function Player() {
       }
     }
   }, [cursor])
+
+  // Words Editing
+  useEffect(() => {  
+    const _words = words.filter((word: Word) => wordsIdx.includes(word.id))        
+    const marks:[number, number][] = [];
+    for (const word of _words) {
+      const x1 = (width * word.start) / duration;
+      const x2 = (width * word.end) / duration;      
+      marks.push([x1,x2]);
+    }    
+    setMarks(marks);     
+  }, [words])
 
   const onPlay = (e: any) =>{
     // console.log("onPlay")

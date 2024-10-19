@@ -3,9 +3,9 @@ import { RootState, AppThunk } from "../../store/store";
 
 export interface Frase {
   ids: string[],
-  text?: string,  
-  start?: number,
-  end?: number
+  text: string,  
+  start: number,
+  end: number
 }
 
 export interface Word {
@@ -15,23 +15,17 @@ export interface Word {
   end: number
 }
 
-export interface WordGroup {
-  text: string,
-  start: number,
-  end: number
-}
-
 export interface WordState {
   words:Word[]
-  display: Word | undefined;
-  selected: Word[];
+  display: Word | undefined;  
+  selectedIdx: string[];
   frases: Frase[]; 
 }
 
 const initialState: WordState = {
   words:[],  
-  display: undefined,
-  selected: [],
+  display: undefined,  
+  selectedIdx: [],
   frases: []
 };
 
@@ -47,21 +41,18 @@ export const wordsSlice = createSlice({
       state.frases = action.payload.map((word: Word) => ({ids: [word.id], text: word.text, start: word.start, end: word.end}))      
     },
     editWord: (state: WordState, action: PayloadAction<Word>) => {
-      const idx = state.words.findIndex((word:Word) => word.id === action.payload.id)
-      state.words[idx] = action.payload;
-      const idx2 = state.selected.findIndex((word:Word) => word.id === action.payload.id)
-      state.selected[idx2] = action.payload;
+      const idx = state.words.findIndex((word:Word) => word.id === action.payload.id)      
+      state.words[idx] = action.payload;      
     },
     displayWord: (state: WordState, action: PayloadAction<Word | undefined>) => {      
       state.display = action.payload;
-    },
-    selectWord: (state: WordState, action: PayloadAction<Word[]>) => {        
-      state.selected = action.payload;      
+    },    
+    selectFraseIds: (state: WordState, action: PayloadAction<string[]>) => {        
+      state.selectedIdx = action.payload;      
     },
     createFrase: (state: WordState, action: PayloadAction<string[]>) => {
       const frases = current(state).frases
-      const words = current(state).words.filter((word:Word) => action.payload.includes(word.id))
-      console.log("words", words)
+      const words = current(state).words.filter((word:Word) => action.payload.includes(word.id))      
       // Find Indexes
       const idx = action.payload.map((id: string) => frases.findIndex((frase: Frase) => frase.ids.includes(id)))      
       // Take upper/lower index
@@ -78,6 +69,6 @@ export const wordsSlice = createSlice({
   },
 });
 
-export const { displayWord, selectWord, setWords, editWord, createFrase } = wordsSlice.actions;
+export const { displayWord, setWords, editWord, createFrase, selectFraseIds } = wordsSlice.actions;
 
 export default wordsSlice.reducer;

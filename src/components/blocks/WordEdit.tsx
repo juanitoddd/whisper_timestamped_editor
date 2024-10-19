@@ -5,9 +5,12 @@ import { CompressOutlined, ScanOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd';
 import { Word, editWord } from '../../features/words/wordsSlice';
 import { setCurrentTime } from '../../features/audio/audioSlice';
+import { useState } from 'react';
 
 export function WordEditor({word, color}: {word: Word, color: any}) {    
   const dispatch = useDispatch<AppDispatch>();
+
+  const [eWord, setWord] = useState<Word>(word)  
 
   const onChange: InputNumberProps['onChange'] = (value) => {
     console.log('changed', value);
@@ -25,20 +28,21 @@ export function WordEditor({word, color}: {word: Word, color: any}) {
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {    
-    const _word = {...word, text: e.target.value}
-    dispatch(editWord(_word))    
-  };
-
-  const startChange = (e: number | null) => {
-    // console.log(`startChange`, e);
-    const _word = {...word, start: e ?? word.start}
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {        
+    const _word = {...eWord, text: e.target.value}
+    setWord(_word)
     dispatch(editWord(_word))
   };
 
-  const endChange = (e: number | null) => {
-    // console.log(`endChange`, e);
-    const _word = {...word, end: e ?? word.end}
+  const startChange = (e: number | null) => {        
+    const _word = {...eWord, start: e ?? word.start}
+    setWord(_word)
+    dispatch(editWord(_word))
+  };
+
+  const endChange = (e: number | null) => {    
+    const _word = {...eWord, end: e ?? word.end}
+    setWord(_word)
     dispatch(editWord(_word))
   };
 

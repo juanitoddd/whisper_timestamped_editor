@@ -4,7 +4,7 @@ import { Checkbox } from "antd";
 import type { CheckboxProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { classNames } from '../../utils/css';
-import { displayWord, selectWord, Word, WordGroup, Frase } from '../../features/words/wordsSlice';
+import { displayWord, Word, Frase, selectFraseIds } from '../../features/words/wordsSlice';
 import { msToSec, secToMs } from '../../utils/time';
 
 function compare(a:Word, b:Word) {
@@ -15,13 +15,15 @@ function compare(a:Word, b:Word) {
 
 export function Timestamps() {
 
-  const dispatch = useDispatch<AppDispatch>();
-  const selectedWords = useSelector((state: RootState) => state.words.selected)  
+  const dispatch = useDispatch<AppDispatch>();  
   const words = useSelector((state: RootState) => state.words.words)
   const frases = useSelector((state: RootState) => state.words.frases)
+  const selectedIdx: string[] = useSelector((state: RootState) => state.words.selectedIdx)
 
   const cursor: number = useSelector((state: RootState) => state.audio.currentTime)
   
+  const [selIdx, setSelIdx] = useState<string[]>([]);
+
   const [current, setCurrent] = useState<Word | undefined>();
   const [start, setStart] = useState<number>(0);
   const [time, setTime] = useState<number>(0);
@@ -80,7 +82,6 @@ export function Timestamps() {
     return () => clearInterval(interval);
   }, [state]);
 
-
   useEffect(() => {
     document.addEventListener("playing", onPlaying as EventListener);
     document.addEventListener("pause", onPause as EventListener);    
@@ -92,30 +93,29 @@ export function Timestamps() {
       document.removeEventListener("seeked", onSeeked as EventListener);
       document.removeEventListener("seeking", onSeeking as EventListener);
     };
-  }, [words]);    
+  }, [words]);
 
-  const isSounding = (word: Word) => {
+  const isSounding = (frase: Frase) => {
     const secs = msToSec(time);
-    return secs > word.start && secs < word.end
+    return secs > frase.start && secs < frase.end
   }
 
-  const onSelect = (word: Word) => {
-    let selected = [...selectedWords]
-    if(!selected.map((w: Word) => w.text).includes(word.text)) selected.push(word)
-    else selected = selected.filter((w: Word) => w.text !== word.text)    
-    selected.sort(compare);
-    dispatch(selectWord(selected))
+  const onSelect = (frase: Frase) => {
+    let _sel = [...selIdx]     
+    for(const id of frase.ids) {
+      if(_sel.includes(id)) _sel = _sel.filter((_id: string) => _id !== id);
+      else _sel.push(id) 
+    }    
+    setSelIdx(_sel);
+    dispatch(selectFraseIds(_sel))
   }
 
-  const onSelect2 = (frase: Frase) => {
-    // let selected = [...selectedWords]
-    // if(!selected.map((w: Word) => w.text).includes(word.text)) selected.push(word)
-    // else selected = selected.filter((w: Word) => w.text !== word.text)    
-    // selected.sort(compare);
-    // dispatch(selectWord(selected))
+  const isChecked = (frase: Frase): boolean => {    
+    let _checked = true
+    for(const id of frase.ids) if(!selectedIdx.includes(id)) _checked = false
+    return _checked
   }
-
-  // const selected = useSelector((state: RootState) => state.ui.rightPanel);  
+   
   return (
     <div>      
       <div className="border-b p-1">Timestamps {msToSec(time)}</div>
@@ -124,7 +124,7 @@ export function Timestamps() {
           
         </div>
         <div className="w-[230px] pt-1">
-          {words.map((word: Word, i: number) => (
+          {/*words.map((word: Word, i: number) => (
             <div
               className={classNames({              
                 'flex border-b': true,
@@ -134,17 +134,19 @@ export function Timestamps() {
                 key={i}>
               <div><Checkbox onChange={() => onSelect(word)}><div className='w-[200px]'>{word.text}</div></Checkbox></div>            
             </div>
-          ))}
-          <hr />
+          ))*/}
+
           {frases.map((frase: Frase, i: number) => (
             <div
               className={classNames({              
                 'flex border-b': true,
+                'border-slate-800 font-bold': isSounding(frase),
+                'border-slate-300 font-normal': !isSounding(frase)
                 })}
                 key={i}>
-              <div><Checkbox onChange={() => onSelect2(frase)}><div className='w-[200px]'>{frase.text}</div></Checkbox></div>            
+              <div><Checkbox checked={isChecked(frase)} onChange={() => onSelect(frase)}><div className='w-[200px]'>{frase.text}</div></Checkbox></div>            
             </div>
-          ))}
+          ))}          
         </div>
       </div>
     </div>
