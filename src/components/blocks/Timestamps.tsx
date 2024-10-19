@@ -4,7 +4,7 @@ import { Checkbox } from "antd";
 import type { CheckboxProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { classNames } from '../../utils/css';
-import { displayWord, selectWord, Word, WordGroup } from '../../features/words/wordsSlice';
+import { displayWord, selectWord, Word, WordGroup, Frase } from '../../features/words/wordsSlice';
 import { msToSec, secToMs } from '../../utils/time';
 
 function compare(a:Word, b:Word) {
@@ -18,6 +18,7 @@ export function Timestamps() {
   const dispatch = useDispatch<AppDispatch>();
   const selectedWords = useSelector((state: RootState) => state.words.selected)  
   const words = useSelector((state: RootState) => state.words.words)
+  const frases = useSelector((state: RootState) => state.words.frases)
 
   const cursor: number = useSelector((state: RootState) => state.audio.currentTime)
   
@@ -26,8 +27,7 @@ export function Timestamps() {
   const [time, setTime] = useState<number>(0);
   const [state, setState] = useState<string>('idle');
   
-  useEffect(() => { 
-    console.log("cursor", cursor)
+  useEffect(() => {     
     setTime(cursor * 100)
   }, [cursor])
   
@@ -45,13 +45,12 @@ export function Timestamps() {
 
   const onSeeked = (e: CustomEvent) => {
     // console.log("onSeeked", secToMs(e.detail.time))
-    setStart(secToMs(e.detail.time))
-    // setStart(e.detail.time)
+    setStart(secToMs(e.detail.time))    
     setState('idle')
   } 
 
   const onSeeking = (e: CustomEvent) => {
-    console.log("onSeeking", e.detail.time)
+    // console.log("onSeeking", e.detail.time)
   }
 
   // Time change
@@ -108,15 +107,23 @@ export function Timestamps() {
     dispatch(selectWord(selected))
   }
 
+  const onSelect2 = (frase: Frase) => {
+    // let selected = [...selectedWords]
+    // if(!selected.map((w: Word) => w.text).includes(word.text)) selected.push(word)
+    // else selected = selected.filter((w: Word) => w.text !== word.text)    
+    // selected.sort(compare);
+    // dispatch(selectWord(selected))
+  }
+
   // const selected = useSelector((state: RootState) => state.ui.rightPanel);  
   return (
     <div>      
       <div className="border-b p-1">Timestamps {msToSec(time)}</div>
       <div className='flex'>
-        <div className='min-w-[20px]'>
+        <div className='min-w-[50px]'>
           
         </div>
-        <div className="w-[260px] pt-1">
+        <div className="w-[230px] pt-1">
           {words.map((word: Word, i: number) => (
             <div
               className={classNames({              
@@ -125,7 +132,17 @@ export function Timestamps() {
                 'border-slate-300 font-normal': !isSounding(word)
                 })}
                 key={i}>
-              <div><Checkbox onChange={() => onSelect(word)}><div className='w-[240px]'>{word.text}</div></Checkbox></div>            
+              <div><Checkbox onChange={() => onSelect(word)}><div className='w-[200px]'>{word.text}</div></Checkbox></div>            
+            </div>
+          ))}
+          <hr />
+          {frases.map((frase: Frase, i: number) => (
+            <div
+              className={classNames({              
+                'flex border-b': true,
+                })}
+                key={i}>
+              <div><Checkbox onChange={() => onSelect2(frase)}><div className='w-[200px]'>{frase.text}</div></Checkbox></div>            
             </div>
           ))}
         </div>

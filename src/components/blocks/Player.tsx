@@ -8,7 +8,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import { useEffect, useRef, useState } from 'react';
 // import { setCurrentTime, setDuration, setSelection } from '../../features/audio/audioSlice';
 import { msToSec } from '../../utils/time';
-import { Word } from '../../features/words/wordsSlice';
+import { Frase, Word } from '../../features/words/wordsSlice';
 import { tagColors } from '../../utils/css';
 
 const AUDIO_URL = '/basic_es.wav';
@@ -17,15 +17,16 @@ const WAVE_HEIGHT = 95;
 export function Player() {
 
   const dispatch = useDispatch<AppDispatch>();
-  const selection = useSelector((state: RootState) => state.audio.selection)
+  const words = useSelector((state: RootState) => state.words.words)
   const selectedWords: Word[] = useSelector((state: RootState) => state.words.selected)
   const cursor: number = useSelector((state: RootState) => state.audio.currentTime)
 
-  const [head, setHead] = useState<number>(0); // Player head
+  const [head, setHead] = useState<number>(0); // Player head in pixels
+  const [audioURL, setAudioURL] = useState<string>(AUDIO_URL); // Player url
   const [marks, setMarks] = useState<[number, number][]>([]); // Selected Words
-  const [duration, setDuration] = useState<number>(0);
-  const [width, setWidth] = useState<number>(0);
-  const [blob, setBlob] = useState<Blob>();
+  const [duration, setDuration] = useState<number>(0); // Total Audio duration
+  const [width, setWidth] = useState<number>(0); // window width
+  const [blob, setBlob] = useState<Blob>(); // Audio blob
   const visualizerRef = useRef<HTMLCanvasElement>(null)
   const audioPlayerRef = useRef<AudioPlayer>(null);
   const wordRef = useRef<HTMLDivElement>(null)
@@ -65,38 +66,36 @@ export function Player() {
 
   useEffect(() => {
     if(duration > 0) {
-      const head = (width * cursor) / duration;      
-      setHead(head);
+      // const head = (width * cursor) / duration;      
+      // setHead(head);
       if(audioPlayerRef.current) {
-        // TODO: Set Playback at time cursor             
-        // audioPlayerRef.current.setJumpTime(cursor * 100)
+        setAudioURL(`${AUDIO_URL}#t=${cursor}`)        
       }
     }
   }, [cursor])
 
   const onPlay = (e: any) =>{
-    console.log("onPlay")   
+    // console.log("onPlay")
     const playingEvt = new CustomEvent("playing", { detail: { time: e.target?.currentTime }});
     document.dispatchEvent(playingEvt);
   }
   const onPause = (e: any) =>{
-    console.log("onPause") 
+    // console.log("onPause")
     const time = e.target?.currentTime;
     if(!time) return
     const pauseEvt = new CustomEvent("pause", { detail: { time }});
-    const head = (width * time) / (duration * 100);
+    let head = (width * time) / (duration * 100);
+    if(time === duration) head = width - 1;
     setHead(head);
     document.dispatchEvent(pauseEvt);
   }  
   const onSeeked = (e: any) =>{
     const time = e.target?.currentTime;
-    console.log("onSeeked", time)    
+    // console.log("onSeeked", time)
     if(!time) return
     const seekedEvt = new CustomEvent("seeked", { detail: { time }});    
     let head = (width * time) / duration;
-    if(time === duration) head = width - 1;
-    
-    console.log("🚀 ~ onSeeked ~ width:", width)    
+    if(time === duration) head = width - 1;        
     setHead(head);
     document.dispatchEvent(seekedEvt);    
   }
@@ -113,7 +112,8 @@ export function Player() {
 
   const onTime = (e: any, _duration: number, _width: number) =>{    
     const time = e.detail.time;    
-    const head = (_width * time) / (_duration * 100);
+    let head = (_width * time) / (_duration * 100);    
+    if(time === duration) head = width - 1;
     setHead(head);    
   }  
 
@@ -121,8 +121,9 @@ export function Player() {
     <div>
       <AudioPlayer
         ref={audioPlayerRef}
-        src={AUDIO_URL}
+        src={audioURL}
         volume={0.5}
+        autoPlayAfterSrcChange={false}
         showJumpControls={false}
         progressJumpStep={1}
         listenInterval= {5}

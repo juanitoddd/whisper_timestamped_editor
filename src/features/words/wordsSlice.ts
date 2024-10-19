@@ -1,5 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction, current } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../store/store";
+
+export interface Frase {
+  ids: string[],
+  text?: string,  
+  start?: number,
+  end?: number
+}
 
 export interface Word {
   id: string,
@@ -18,14 +25,14 @@ export interface WordState {
   words:Word[]
   display: Word | undefined;
   selected: Word[];
-  output: WordGroup[]; 
+  frases: Frase[]; 
 }
 
 const initialState: WordState = {
   words:[],  
   display: undefined,
   selected: [],
-  output: []
+  frases: []
 };
 
 export const wordsSlice = createSlice({
@@ -33,8 +40,11 @@ export const wordsSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {    
-    setWords: (state: WordState, action: PayloadAction<Word[]>) => {      
+    // Initial Set-up
+    setWords: (state: WordState, action: PayloadAction<Word[]>) => {   
       state.words = action.payload;
+      // Build frases
+      state.frases = action.payload.map((word: Word) => ({ids: [word.id], text: word.text, start: word.start, end: word.end}))      
     },
     editWord: (state: WordState, action: PayloadAction<Word>) => {
       const idx = state.words.findIndex((word:Word) => word.id === action.payload.id)
@@ -46,12 +56,28 @@ export const wordsSlice = createSlice({
       state.display = action.payload;
     },
     selectWord: (state: WordState, action: PayloadAction<Word[]>) => {        
-      state.selected = action.payload;
-      // state.display = action.payload.map((word: Word) => word.text).join(' ');
+      state.selected = action.payload;      
+    },
+    createFrase: (state: WordState, action: PayloadAction<string[]>) => {
+      const frases = current(state).frases
+      const words = current(state).words.filter((word:Word) => action.payload.includes(word.id))
+      console.log("words", words)
+      // Find Indexes
+      const idx = action.payload.map((id: string) => frases.findIndex((frase: Frase) => frase.ids.includes(id)))      
+      // Take upper/lower index
+      const min = Math.min(...idx)
+      const max = Math.max(...idx)               
+      // Replace min index with new joined array
+      state.frases[min].ids = action.payload
+      state.frases[min].text = words.map((word:Word) => word.text).join(' ')
+      state.frases[min].start = Math.min(...words.map((word:Word) => word.start))
+      state.frases[min].end = Math.max(...words.map((word:Word) => word.end))
+      // Remove lastindex
+      state.frases.splice(max, 1);
     },
   },
 });
 
-export const { displayWord, selectWord, setWords, editWord } = wordsSlice.actions;
+export const { displayWord, selectWord, setWords, editWord, createFrase } = wordsSlice.actions;
 
 export default wordsSlice.reducer;

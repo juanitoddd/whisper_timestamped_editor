@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { Button, Input, InputNumber, InputNumberProps, Select } from "antd";
-import { CompressOutlined } from '@ant-design/icons';
+import { CompressOutlined, ScanOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd';
 import { Word, editWord } from '../../features/words/wordsSlice';
 import { setCurrentTime } from '../../features/audio/audioSlice';
@@ -31,13 +31,13 @@ export function WordEditor({word, color}: {word: Word, color: any}) {
   };
 
   const startChange = (e: number | null) => {
-    console.log(`startChange`, e);
+    // console.log(`startChange`, e);
     const _word = {...word, start: e ?? word.start}
     dispatch(editWord(_word))
   };
 
   const endChange = (e: number | null) => {
-    console.log(`endChange`, e);
+    // console.log(`endChange`, e);
     const _word = {...word, end: e ?? word.end}
     dispatch(editWord(_word))
   };
@@ -49,12 +49,12 @@ export function WordEditor({word, color}: {word: Word, color: any}) {
   }
 
   return (
-    <div className='p-2 border rounded my-3' style={{background: color.background, border:`1px solid ${color.border}`}}>
+    <div className='p-2 border rounded' style={{background: color.background, border:`1px solid ${color.border}`}}>
       <div className="flex justify-between items-center mb-2">      
         <div><Input type='' value={word.text} onChange={handleTextChange} /></div>
         <div className="flex">
           <div><InputNumber step={0.01} defaultValue={word.start} onChange={startChange} /></div>
-          <div><Button onClick={placeCursor} className="bg-sky-300 border-0" icon={<CompressOutlined />}></Button></div>
+          <div><Button onClick={placeCursor} className="border-0" icon={<ScanOutlined rotate={90} /> }></Button></div>
           <div><InputNumber step={0.01} defaultValue={word.end} onChange={endChange} /></div>
         </div>
       </div>
